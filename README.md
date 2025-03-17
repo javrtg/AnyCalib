@@ -291,7 +291,7 @@ Feel free to use any other experiment name. By default, the checkpoints will be 
 
 For example, for training with $\mathrm{OP_{g}}$:
 ```shell
-python -m siclib.train anycalib_op_g --conf anycalib --distributed data.dataset_dir='data/openpano_v2/openpano_v2_dist'
+python -m siclib.train anycalib_op_g --conf anycalib --distributed data.dataset_dir='data/openpano_v2/openpano_v2_gen'
 ```
 
 For training with $\mathrm{OP_{d}}$:
