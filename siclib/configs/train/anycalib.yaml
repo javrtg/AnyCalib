@@ -1,0 +1,47 @@
+seed: 0
+# num_steps: 150_000
+epochs: 40
+keep_last_checkpoints: 3
+
+writer: tensorboard
+log_every_iter: 500
+eval_every_iter: 1000
+test_every_epoch: 5
+
+lr: 6e-5
+optimizer: adamw
+clip_grad: 1.0
+best_key: angular_error
+
+lr_scaling:
+  - [0.1, ["backbone"]]
+
+lr_schedule:
+  type: SequentialLR
+  on_epoch: false
+  options:
+    milestones: [1_000]
+    schedulers:
+      - type: LinearLR
+        options:
+          start_factor: 1e-3
+          total_iters: 1_000
+      - type: MultiStepLR
+        options:
+          gamma: 0.3
+          milestones: [10_000, 30_000]
+
+submodules: []
+
+median_metrics:
+  - maha_dist_error
+  - angular_error
+  - vfov_error
+  - angular_error_recall@1
+  - angular_error_recall@5
+  - angular_error_recall@10
+
+recall_metrics:
+  vfov_error: [1, 5, 10]
+
+plot: [2, "anycalib.visualization.viz_batch.make_batch_figures"]

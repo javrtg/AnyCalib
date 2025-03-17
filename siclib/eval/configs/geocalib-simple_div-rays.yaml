@@ -1,0 +1,10 @@
+model:
+  name: networks.geocalib_pretrained_rays
+  camera_model: simple_divisional
+  model_weights: distorted
+data:
+  im_geom_transform: null
+  preprocessing:
+    resize: null
+    edge_divisible_by: null
+  cam_id: division:1

@@ -1,0 +1,9 @@
+model:
+  name: networks.wildcam_pretrained
+  with_assumption: false
+
+data:
+  im_geom_transform: null
+  preprocessing:
+    resize: null
+    edge_divisible_by: null

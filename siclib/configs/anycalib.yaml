@@ -1,0 +1,6 @@
+defaults:
+  - data: openpano-rays
+  - train: anycalib
+  - model: anycalib
+  - _self_
+

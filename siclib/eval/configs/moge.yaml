@@ -1,0 +1,8 @@
+model:
+  name: networks.moge_pretrained
+
+data:
+  im_geom_transform: null
+  preprocessing:
+    resize: null
+    edge_divisible_by: null

@@ -1,0 +1,14 @@
+model:
+  name: networks.anycalib_net
+
+data:
+  # aspect_ratio_strategy MUST match training config
+  to_closest_train_size: true
+  im_geom_transform:
+    aspect_ratio: [0.5, 2.0]
+    resolution: 102_400
+
+  use_prior_cxcy: False
+  preprocessing:
+    # resize: 322
+    edge_divisible_by: 14

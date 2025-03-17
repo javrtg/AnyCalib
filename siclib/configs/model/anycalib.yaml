@@ -1,0 +1,42 @@
+name: networks.anycalib_net
+
+backbone:
+  name: dinov2
+  conf:
+    model_name: dinov2_vitl14
+    num_trainable_blocks: -1 # -1 -> all blocks are trainable
+    intermediate_layers: null # null -> default DPT's intermediate layers
+
+decoder:
+  name: light_dpt_tangent_decoder
+  conf:
+    dim_dhat: 256
+    post_process_channels: null
+  conf_head:
+    predict_covs: false
+    predict_mixture: false # will be ignored for some heads
+    use_tanh: false # will be ignored for some heads
+    logvar_lims: [-20, 10] # ignored if predict_covs is false
+
+calibrator:
+  rm_borders: 0
+  detach_lin_fit: true
+  detach_rays: false
+  nonlin_opt:
+    use_covs: false
+    name: gauss_newton
+    conf:
+      max_iters: 5
+      res_tangent: fitted
+  loss:
+    name: null
+    weight: 1.0
+
+loss:
+  names: [l1-z1]
+  weights: [1.0]
+
+recall_thresholds:
+  - 1
+  - 5
+  - 10

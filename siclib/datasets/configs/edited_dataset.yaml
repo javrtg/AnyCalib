@@ -1,0 +1,6 @@
+# im_dir: ???
+# output_im_dir: ???
+pixel_aspect_ratio: [0.5, 2.0]
+crop_factor: 0.5
+device: cuda
+overwrite: true

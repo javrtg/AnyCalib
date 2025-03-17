@@ -1,0 +1,66 @@
+name: openpano_v2_dist
+base_dir: data/openpano_v2
+pano_dir: "${.base_dir}/panoramas"
+images_per_pano: 16
+n_workers: 1
+device: cpu
+overwrite: true
+im_size: [640, 640] # h, w
+
+# 1) extrinsics
+roll:
+  type: uniform # uni[-45, 45]
+  options:
+    loc: -0.7853981633974483 # -45 degrees
+    scale: 1.5707963267948966 # 90 degrees
+pitch:
+  type: uniform # uni[-45, 45]
+  options:
+    loc: -0.7853981633974483 # -45 degrees
+    scale: 1.5707963267948966 # 90 degrees
+
+# 2) resize factor
+resize_factor:
+  type: uniform
+  options:
+    loc: 1.2
+    scale: 0.5
+
+# 3) intrinsics with (possibly) several camera models
+intrinsics:
+  - cam_id: radial:1
+    weight: 0.5
+    vfov:
+      type: uniform # uni[20, 105]
+      options:
+        loc: 0.3490658503988659 # 20 degrees
+        scale: 1.48352986419518 # 85 degrees
+    dist:
+      # k1_hat. Following Geocalib: k1 = k1_hat * focal / height
+      - name: k1_hat
+        type: truncnorm
+        options:
+          a: -4.285714285714286 # corresponds to -0.3
+          b: 4.285714285714286 # corresponds to 0.3
+          loc: 0
+          scale: 0.07
+
+  - cam_id: eucm
+    weight: 0.5
+    vfov:
+      type: uniform # uni[50, 180]
+      options:
+        loc: 0.8726646259971648 # 50 degrees
+        scale: 2.2689280275926285 # 130 degrees
+    dist:
+      - name: alpha # uni[0.5, 0.8]
+        type: uniform
+        options:
+          loc: 0.5
+          scale: 0.3
+      - name: beta # uni[0.5, 2.0]
+        type: uniform
+        options:
+          loc: 0.5
+          scale: 1.5
+

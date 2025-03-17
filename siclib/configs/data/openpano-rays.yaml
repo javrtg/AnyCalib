@@ -1,0 +1,23 @@
+name: simple_dataset_rays
+dataset_dir: data/openpano_v2/openpano_v2
+
+preprocessing:
+  edge_divisible_by: 14
+
+im_geom_transform:
+  aspect_ratio: [0.5, 2.0]
+  resolution: 102_400
+  change_pixel_ar: false
+  crop: null
+  edit_prob: 0.5
+
+augmentations:
+  name: geocalib
+grayscale: false
+
+train_batch_size: 24
+val_batch_size: 24
+test_batch_size: 24
+
+num_workers: 6
+prefetch_factor: 2

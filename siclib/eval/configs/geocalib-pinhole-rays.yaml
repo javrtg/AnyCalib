@@ -1,0 +1,7 @@
+model:
+  name: networks.geocalib_pretrained_rays
+data:
+  im_geom_transform: null
+  preprocessing:
+    resize: null
+    edge_divisible_by: null

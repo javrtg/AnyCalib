@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+# to also install the modules under folders w/o __init__.py, we use the pattern pkg*:
+include = ["anycalib*"]
+
+[tool.ruff]
+src=["anycalib","tests","siclib"]
+
+[tool.ruff.lint.isort]
+known-first-party=["anycalib","tests","siclib"]
+
+[project]
+name = "anycalib"
+version = "1.0"
+authors = [
+    {name = "Javier Tirado Garin", email = "jtiradogarin@gmail.com"},
+]
+description = "AnyCalib - Single View Calibration"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+dependencies = ["torch", "xformers"]

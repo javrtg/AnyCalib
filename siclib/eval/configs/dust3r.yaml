@@ -1,0 +1,9 @@
+model:
+  # name: networks.dust3r_pretrained
+  name: networks.dust3r_pretrained_rays
+
+data:
+  im_geom_transform: null
+  preprocessing:
+    resize: null
+    edge_divisible_by: null
