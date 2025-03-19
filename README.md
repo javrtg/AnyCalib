@@ -5,18 +5,23 @@
     I3A, University of Zaragoza</p>
     <img width="99%" src="https://github.com/javrtg/AnyCalib/blob/main/assets/method_dark.png?raw=true">
     <p><strong>Camera calibration from a single perspective/edited/distorted image using a freely chosen camera model</strong></p>
-    <p><a href="TODO-link">arXiv</a></p>
+    <p><a href="https://arxiv.org/abs/2503.12701">arXiv</a></p>
 </div>
 
 
 ## Usage (pretrained models)
 
-A [compatible](https://github.com/facebookresearch/xformers/releases) version of both `torch` and `xformers` is required. During development, we used `torch=2.4.1` and `xformers=0.0.28.post1`. 
-The project, in development mode, along the latest compatible versions can be installed with:
+The only requirements are Python (≥3.10) and PyTorch.
+The project, in development mode, can be installed with:
 ```shell
 git clone https://github.com/javrtg/AnyCalib.git && cd AnyCalib
 pip install -e .
 ```
+Alternatively, and optionally, a compatible version of [`xformers`](https://github.com/facebookresearch/xformers) can also be installed for better efficiency by running the following instead of `pip install -e .`:
+```shell
+pip install -e .[eff]
+```
+
 
 ### Minimal usage example
 ```python
@@ -198,11 +203,11 @@ Running the evaluation commands will download the dataset to `data/monovo2k` whi
 
 AnyCalib trained on $\mathrm{OP_{d}}$: 
 ```shell
-python -m siclib.eval.monovo2k_rays --conf anycalib_pretrained --tag anycalib_d --overwrite model.model_id=anycalib_dist
+python -m siclib.eval.monovo2k_rays --conf anycalib_pretrained --tag anycalib_d --overwrite model.model_id=anycalib_dist data.cam_id=ucm
 ```
 AnyCalib trained on $\mathrm{OP_{g}}$: 
 ```shell
-python -m siclib.eval.monovo2k_rays --conf anycalib_pretrained --tag anycalib_g --overwrite model.model_id=anycalib_gen
+python -m siclib.eval.monovo2k_rays --conf anycalib_pretrained --tag anycalib_g --overwrite model.model_id=anycalib_gen data.cam_id=ucm
 ```
 
 ### ScanNet++
@@ -257,7 +262,7 @@ python -m siclib.datasets.utils.download_openpano --name openpano_v2 --laval_dir
 ```
 The panoramas from PolyHaven, HDRMaps, AmbientCG and BlenderKit can be alternatively manually downloaded from [here](https://drive.google.com/drive/folders/1HSXKNrleJKas4cRLd1C8SqR9J1nU1-Z_?usp=sharing).
 
-Aftwerwards, the different training datasets mentioned in the paper: $\mathrm{OP_{p}}$, $\mathrm{OP_{g}}$, $\mathrm{OP_{r}}$ and $\mathrm{OP_{d}}$ can be created by running the following commands. We recommend running them with the flag `device=cuda` as this significantly speeds up the creation of the datasets, but if no GPU is available, the flag can be omitted.
+Afterwards, the different training datasets mentioned in the paper: $\mathrm{OP_{p}}$, $\mathrm{OP_{g}}$, $\mathrm{OP_{r}}$ and $\mathrm{OP_{d}}$ can be created by running the following commands. We recommend running them with the flag `device=cuda` as this significantly speeds up the creation of the datasets, but if no GPU is available, the flag can be omitted.
 
 $\mathrm{OP_{p}}$ (will be stored under `data/openpano_v2/openpano_v2`):
 ```shell
@@ -330,7 +335,7 @@ If you use any ideas from the paper or code from this repo, please consider citi
 @article{tirado2025anycalib,
   title={{AnyCalib: On-Manifold Learning for Model-Agnostic Single-View Camera Calibration}},
   author={Javier Tirado-Garín and Javier Civera},
-  journal={}, # TODO
+  journal={arXiv preprint arXiv:2503.12701},
   year={2025}
 }
 ```

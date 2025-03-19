@@ -22,4 +22,8 @@ description = "AnyCalib - Single View Calibration"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
-dependencies = ["torch", "xformers"]
+dependencies = ["torch"]
+
+[project.optional-dependencies]
+eff = ["xformers"]
+viz = ["matplotlib"]
