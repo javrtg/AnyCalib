@@ -19,7 +19,7 @@ resource.setrlimit(resource.RLIMIT_NOFILE, (4096, rlimit[1]))
 torch.set_grad_enabled(False)
 
 
-class MonoVOpp2k(SimplePipeline):
+class MonoVO2k(SimplePipeline):
     default_conf = {
         "data": {
             "name": "simple_dataset_rays",
@@ -41,6 +41,7 @@ class MonoVOpp2k(SimplePipeline):
             "eval_on_edit": False,
         },
         "url": None,
+        "url": "https://drive.google.com/uc?id=18rQ-WZcxXogeBqMwWvSkxVVEmZ9C12BZ",
     }
 
     export_keys = ["intrinsics"]
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     parser = get_eval_parser()
     args = parser.parse_intermixed_args()
 
-    default_conf = OmegaConf.create(MonoVOpp2k.default_conf)
+    default_conf = OmegaConf.create(MonoVO2k.default_conf)
 
     # mingle paths
     output_dir = Path(EVAL_PATH, dataset_name)  # type: ignore
@@ -70,7 +71,7 @@ if __name__ == "__main__":
     experiment_dir = output_dir / name
     experiment_dir.mkdir(exist_ok=True)
 
-    pipeline = MonoVOpp2k(conf)
+    pipeline = MonoVO2k(conf)
     s, f, r = pipeline.run(
         experiment_dir,
         overwrite=args.overwrite,
