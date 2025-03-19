@@ -38,7 +38,7 @@ class GaussNewtonCalib:
             self.res_jac_fun = self.res_and_jac_in_z1_tangent
         else:
             raise ValueError(
-                "`res_tangent` must be 'observed' or 'fitted'. However, got: "
+                "`res_tangent` must be 'observed', 'fitted', or 'z1'. However, got: "
                 f"'{res_tangent=}'."
             )
         self.res_tangent = res_tangent

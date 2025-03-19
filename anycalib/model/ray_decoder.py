@@ -28,8 +28,9 @@ def cvx_upsample(x: Tensor, mask: Tensor, up_factor: int = 7) -> Tensor:
 class ConvexTangentDecoder(nn.Module):
     """Convex Tangent Coordinates Decoder.
 
-    This decoder predicts ray coordinates projected onto the tangent plane of the optical
-    axis. Thereby this decoder predicts a minimal (2D) representation of the 3D rays.
+    This decoder predicts 2D coordinates in the tangent space of the unit sphere at the
+    optical axis: z_1 = [0, 0, 1]. These coordinates are subsequently mapped to unit
+    rays using the exponential map.
 
     Args:
         in_channels: number of input channels
