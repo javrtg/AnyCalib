@@ -266,19 +266,19 @@ Afterwards, the different training datasets mentioned in the paper: $\mathrm{OP_
 
 $\mathrm{OP_{p}}$ (will be stored under `data/openpano_v2/openpano_v2`):
 ```shell
-python -m siclib.datasets.create_dataset_from_pano --config_name openpano_v2 device=cuda
+python -m siclib.datasets.create_dataset_from_pano --config-name openpano_v2 device=cuda
 ```
 $\mathrm{OP_{g}}$ (will be stored under `data/openpano_v2/openpano_v2_gen`):
 ```shell
-python -m siclib.datasets.create_dataset_from_pano_rays --config_name openpano_v2_gen device=cuda
+python -m siclib.datasets.create_dataset_from_pano_rays --config-name openpano_v2_gen device=cuda
 ```
 $\mathrm{OP_{r}}$ (will be stored under `data/openpano_v2/openpano_v2_radial`):
 ```shell
-python -m siclib.datasets.create_dataset_from_pano_rays --config_name openpano_v2_radial device=cuda
+python -m siclib.datasets.create_dataset_from_pano_rays --config-name openpano_v2_radial device=cuda
 ```
 $\mathrm{OP_{d}}$ (will be stored under `data/openpano_v2/openpano_v2_dist`):
 ```shell
-python -m siclib.datasets.create_dataset_from_pano_rays --config_name openpano_v2_dist device=cuda
+python -m siclib.datasets.create_dataset_from_pano_rays --config-name openpano_v2_dist device=cuda
 ```
 
 ## Training
