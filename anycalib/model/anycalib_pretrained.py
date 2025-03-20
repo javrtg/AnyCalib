@@ -296,8 +296,8 @@ class AnyCalib(torch.nn.Module):
         pred = self.forward({"image": im, "cam_id": cam_id})
 
         # based on the initial resize, correct focal length and principal point
-        for i, (intrins, cam_id) in enumerate(zip(pred["intrinsics"], cam_id)):
-            cam = CameraFactory.create_from_id(cam_id)
+        for i, (intrins, cam_id_) in enumerate(zip(pred["intrinsics"], cam_id)):
+            cam = CameraFactory.create_from_id(cam_id_)
             pred["intrinsics"][i] = cam.reverse_scale_and_shift(
                 intrins, scale_xy, shift_xy
             )

@@ -126,10 +126,7 @@ class LightDPTDecoder(nn.Module):
                 - class_tokens: list of (B, embdedding_dim) class tokens.
 
         Returns:
-            dict with the following key-value pairs:
-                - "rays": (B, 3, H, W) normalized rays.
-                - "log_covs": (B, 2, H, W) logarithm of the diagonal elements of the
-                    covariance matrices.
+            (B, dim_dhat, H/7, W/7) tensor
         """
         x = inputs["outputs"]  # ignore class tokens
         assert len(x) == self.num_reassemble_blocks
