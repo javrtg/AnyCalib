@@ -12,7 +12,7 @@ from siclib import logger
 
 URLS = {
     "openpano": "https://cvg-data.inf.ethz.ch/GeoCalib_ECCV2024/openpano.zip",
-    "openpano_v2": "https://drive.google.com/uc?id=1XgxizXyuYm1qz5AT9eamxiiId16u-CY3",
+    "openpano_v2": "https://drive.google.com/uc?id=17bmJedVjR5fmTzQJ3KEC27KEapzll6Sk",
 }
 
 
