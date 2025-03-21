@@ -193,9 +193,9 @@ python -m siclib.eval.stanford2d3d_rays --conf anycalib_pretrained --tag anycali
 ### MegaDepth (radial)
 Running the evaluation commands will download the dataset to `data/megadepth2k-radial` which will take around 1.4 GB of disk space.
 
-AnyCalib trained on $\mathrm{OP_{p}}$: 
+AnyCalib trained on $\mathrm{OP_{g}}$: 
 ```shell
-python -m siclib.eval.megadepth2k_radial_rays --conf anycalib_pretrained --tag anycalib_p --overwrite
+python -m siclib.eval.megadepth2k_radial_rays --conf anycalib_pretrained --tag anycalib_g --overwrite model.model_id=anycalib_gen
 ```
 
 ### Mono
