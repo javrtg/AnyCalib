@@ -46,9 +46,9 @@ class Tartanair(SimplePipeline):
     export_keys = ["intrinsics"]
 
     optional_export_keys = [
-        "intrinsics_uncertainty",
-        "rays",
-        "log_covs",
+        # "intrinsics_uncertainty",
+        # "rays",
+        # "log_covs",
     ]
 
 
