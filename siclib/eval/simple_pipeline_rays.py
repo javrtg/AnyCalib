@@ -300,8 +300,8 @@ class SimplePipeline(EvalPipeline):
 
             if i < self.num_vis:
                 if "rays" not in pred:
-                    # h, w = data["image"].shape[-2:]
-                    w, h = data["original_image_size"].tolist()
+                    h, w = data["image"].shape[-2:]
+                    # w, h = data["original_image_size"].tolist()
                     pred["rays"] = cam.ray_grid(h, w, pred["intrinsics"])[0].view(h * w, 3)
 
                 figs = make_batch_figures(pred, data)
