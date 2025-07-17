@@ -319,8 +319,7 @@ data.im_geom_transform.crop=0.5
 
 After training, the model can be evaluated using its experiment name:
 ```shell
-python -m siclib.eval.<benchmark> --checkpoint <experiment_name> \
---tag <experiment_tag>
+python -m siclib.eval.<benchmark> --checkpoint <experiment_name> --tag <experiment_tag> --conf anycalib
 ```
 
 
