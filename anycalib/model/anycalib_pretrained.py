@@ -258,6 +258,7 @@ class AnyCalib(torch.nn.Module):
             url, model_dir, map_location="cpu", file_name=f"{model_id}.pt"
         )
         self.load_state_dict(state_dict, strict=True)
+        self.eval()
 
     def forward(self, data):
         # get ray and FoV fields
