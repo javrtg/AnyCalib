@@ -442,14 +442,21 @@ class BaseCamera(ABC):
     ) -> Tensor:
         """Undistort an image using the distortion model.
 
-        This method assumes that the focal length(s) follow the general convention of
-        being the first (1, 2) parameter(s) of the given Tensor, followed by the
-        principal point (cx, cy). This method also assumes that the focal length is
-        expressed in pixels.
+        Assumptions of this method:
+        1.  The focal length(s) follow the general convention of being the first (1, 2)
+            parameter(s) of the given Tensor, followed by the principal point (cx, cy).
+        2.  This method also assumes that the focal length is expressed in pixels, and
+        3.  that the principal point coordinates are expressed w.r.t. an image plane
+            coordinate system whose origin (0, 0) is the top-left corner of the top-left pixel.
 
         Args:
             im: (B, 3, H, W) or (3, H, W) image.
             params: (B, D) intrinsic parameters.
+            scale: scaling factor for the focal length(s).
+            target_proj: target projection model for the undistortion. See options in
+                the method `ideal_unprojection`.
+            outside_value: value to use for pixels outside the image bounds after
+                undistortion.
 
         Returns:
             (B, 3, H, W) or (3, H, W) undistorted image.
@@ -479,14 +486,14 @@ class BaseCamera(ABC):
         if valid is not None and not valid.all():
             print(f"Warning: {~valid.sum()} invalid projections.")
         map_xy = map_xy.reshape(b, h, w, 2) + 1  # +1 due to the padding done below
-        map_xy[..., 0] /= w - 1
-        map_xy[..., 1] /= h - 1
+        map_xy[..., 0] /= w + 2 # +2 due to the padding done below
+        map_xy[..., 1] /= h + 2
         map_xy = 2 * map_xy - 1
-        # padd according to desired out-of-bounds value
+        # pad according to desired out-of-bounds value
         im = torch.nn.functional.pad(im, (1, 1, 1, 1), value=outside_value)
         # undistort
         im_undist = torch.nn.functional.grid_sample(
-            im, map_xy, align_corners=True, padding_mode="border"
+            im, map_xy, mode="bilinear", padding_mode="border", align_corners=False
         )
         if not is_batched:
             im_undist = im_undist[0]
