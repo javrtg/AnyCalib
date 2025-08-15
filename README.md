@@ -331,10 +331,10 @@ Thanks also to the authors of [The Laval Photometric Indoor HDR Dataset](http://
 ## BibTex citation
 If you use any ideas from the paper or code from this repo, please consider citing:
 ```bibtex
-@article{tirado2025anycalib,
+@InProceedings{tirado2025anycalib,
+  author={Javier Tirado-Gar{\'\i}n and Javier Civera},
   title={{AnyCalib: On-Manifold Learning for Model-Agnostic Single-View Camera Calibration}},
-  author={Javier Tirado-Garín and Javier Civera},
-  journal={arXiv preprint arXiv:2503.12701},
+  booktitle={ICCV},
   year={2025}
 }
 ```
