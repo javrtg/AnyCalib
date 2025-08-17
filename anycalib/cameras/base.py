@@ -5,7 +5,6 @@ from torch import Tensor
 
 
 class BaseCamera(ABC):
-
     MAX_NPARAMS: int = 8
 
     PARAMS_IDX: dict[str, int]
@@ -363,9 +362,9 @@ class BaseCamera(ABC):
         Returns:
             (...,) vertical field of view in radians.
         """
-        assert (
-            "f" in self.PARAMS_IDX or "fy" in self.PARAMS_IDX
-        ), f"focal length not found in camera model {self.NAME}"
+        assert "f" in self.PARAMS_IDX or "fy" in self.PARAMS_IDX, (
+            f"focal length not found in camera model {self.NAME}"
+        )
         self.validate_params(params)
 
         if isinstance(h, int):
@@ -439,6 +438,7 @@ class BaseCamera(ABC):
         scale: float = 1.0,
         target_proj: str = "perspective",
         outside_value: float = 1.0,
+        interp_mode: str = "bilinear",
     ) -> Tensor:
         """Undistort an image using the distortion model.
 
@@ -457,6 +457,8 @@ class BaseCamera(ABC):
                 the method `ideal_unprojection`.
             outside_value: value to use for pixels outside the image bounds after
                 undistortion.
+            interp_mode: interpolation mode for the grid sample operation. Default is
+                "bilinear". Other options are "nearest" and "bicubic".
 
         Returns:
             (B, 3, H, W) or (3, H, W) undistorted image.
@@ -485,15 +487,15 @@ class BaseCamera(ABC):
         map_xy, valid = self.project(params, rays)
         if valid is not None and not valid.all():
             print(f"Warning: {~valid.sum()} invalid projections.")
-        map_xy = map_xy.reshape(b, h, w, 2) + 1  # +1 due to the padding done below
-        map_xy[..., 0] /= w + 2 # +2 due to the padding done below
-        map_xy[..., 1] /= h + 2
-        map_xy = 2 * map_xy - 1
-        # pad according to desired out-of-bounds value
-        im = torch.nn.functional.pad(im, (1, 1, 1, 1), value=outside_value)
+        # normalize coords to [-1, 1]
+        map_xy = 2 * map_xy.reshape(b, h, w, 2) / map_xy.new_tensor((w, h)) - 1
         # undistort
-        im_undist = torch.nn.functional.grid_sample(
-            im, map_xy, mode="bilinear", padding_mode="border", align_corners=False
+        im_undist = outside_value + torch.nn.functional.grid_sample(
+            im - outside_value,
+            map_xy,
+            mode=interp_mode,
+            padding_mode="zeros",
+            align_corners=False,
         )
         if not is_batched:
             im_undist = im_undist[0]
