@@ -1,3 +1,5 @@
+import inspect
+from math import sqrt
 from typing import Union
 
 import albumentations as A
@@ -16,6 +18,18 @@ class IdentityTransform(A.ImageOnlyTransform):
 
     def get_transform_init_args_names(self):
         return ()
+
+
+def _gauss_noise_transform():
+    if "std_range" in inspect.signature(A.GaussNoise.__init__).parameters:
+        return A.GaussNoise(
+            std_range=(sqrt(5) / 255, sqrt(112) / 255),
+            mean_range=(0.0, 0.0),
+            per_channel=True,
+            p=0.75,
+        )
+    else:
+        return A.GaussNoise(var_limit=(5.0, 112.0), mean=0, per_channel=True, p=0.75)
 
 
 class RandomAdditiveShade(A.ImageOnlyTransform):
@@ -40,7 +54,9 @@ class RandomAdditiveShade(A.ImageOnlyTransform):
             shaded = self._py_additive_shade(img.astype(np.float32))
             shaded = shaded.astype(np.uint8)
         else:
-            raise NotImplementedError(f"Data augmentation not available for type: {img.dtype}")
+            raise NotImplementedError(
+                f"Data augmentation not available for type: {img.dtype}"
+            )
         return shaded
 
     def _py_additive_shade(self, img):
@@ -190,7 +206,9 @@ class DarkAugmentation(BaseAugmentation):
             A.OneOf(
                 [
                     A.Blur(**kwi(blur, p=0.1, blur_limit=(3, 9), n="blur")),
-                    A.MotionBlur(**kwi(blur, p=0.2, blur_limit=(3, 25), n="motion_blur")),
+                    A.MotionBlur(
+                        **kwi(blur, p=0.2, blur_limit=(3, 25), n="motion_blur")
+                    ),
                     A.ISONoise(),
                     A.ImageCompression(),
                 ],
@@ -256,15 +274,19 @@ class DeepCalibAugmentations(BaseAugmentation):
     def _init(self, conf):
         self.transforms = [
             A.RandomBrightnessContrast(p=0.5),
-            A.GaussNoise(var_limit=(5.0, 112.0), mean=0, per_channel=True, p=0.75),
+            _gauss_noise_transform(),
             A.Downscale(
                 scale_min=0.5,
                 scale_max=0.95,
                 interpolation=dict(downscale=cv2.INTER_AREA, upscale=cv2.INTER_LINEAR),
                 p=0.5,
             ),
-            A.Downscale(scale_min=0.5, scale_max=0.95, interpolation=cv2.INTER_LINEAR, p=0.5),
-            A.ImageCompression(quality_lower=20, quality_upper=85, p=1, always_apply=True),
+            A.Downscale(
+                scale_min=0.5, scale_max=0.95, interpolation=cv2.INTER_LINEAR, p=0.5
+            ),
+            A.ImageCompression(
+                quality_lower=20, quality_upper=85, p=1, always_apply=True
+            ),
             A.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2, p=0.4),
             A.Sharpen(alpha=(0.2, 0.5), lightness=(0.5, 1.0), p=0.5),
             A.ToGray(always_apply=False, p=0.2),
@@ -287,7 +309,7 @@ class GeoCalibAugmentations(BaseAugmentation):
         ]
 
         self.noise_transforms = [
-            A.GaussNoise(var_limit=(5.0, 112.0), mean=0, per_channel=True, p=0.75),
+            _gauss_noise_transform(),
             A.ImageCompression(quality_lower=20, quality_upper=100, p=1),
             A.ISONoise(color_shift=(0.01, 0.05), intensity=(0.1, 0.5), p=0.5),
             A.OneOrOther(
@@ -357,7 +379,11 @@ class RevisitingAugmentations(BaseAugmentation):
     def _init(self, conf):
         self.transforms = [
             A.ColorJitter(
-                brightness=(0.5, 2), contrast=(0.5, 2), saturation=(0.5, 3), hue=0.05, p=1.0
+                brightness=(0.5, 2),
+                contrast=(0.5, 2),
+                saturation=(0.5, 3),
+                hue=0.05,
+                p=1.0,
             ),
             A.Rotate(limit=15, interpolation=cv2.INTER_CUBIC, p=1.0),
             A.HorizontalFlip(p=0.3),
