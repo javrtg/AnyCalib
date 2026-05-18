@@ -86,9 +86,14 @@ class PRMetric:
     @torch.no_grad()
     def update(self, labels, predictions, mask=None):
         assert labels.shape == predictions.shape
-        self.labels += (labels[mask] if mask is not None else labels).cpu().numpy().tolist()
+        self.labels += (
+            (labels[mask] if mask is not None else labels).cpu().numpy().tolist()
+        )
         self.predictions += (
-            (predictions[mask] if mask is not None else predictions).cpu().numpy().tolist()
+            (predictions[mask] if mask is not None else predictions)
+            .cpu()
+            .numpy()
+            .tolist()
         )
 
     @torch.no_grad()
@@ -171,7 +176,7 @@ def compute_auc(errors, thresholds, min_error: Optional[float] = None):
         last_index = np.searchsorted(errors, t, side="right")
         r = np.r_[recall[:last_index], recall[last_index - 1]]
         e = np.r_[errors[:last_index], t]
-        auc = np.trapz(r, x=e) / t
+        auc = np.trapezoid(r, x=e) / t
         aucs.append(np.round(auc, 4))
     return aucs
 
