@@ -5,12 +5,13 @@ kornia
 matplotlib
 
 omegaconf
-albumentations
+albumentations<2 # deprecations: https://github.com/albumentations-team/albumentations/releases/tag/2.0.0
 h5py
 hydra-core
 pandas
 tqdm
 tensorboard
+setuptools<82 # https://github.com/tensorflow/tensorboard/issues/7107
 wandb
 
 gdown
