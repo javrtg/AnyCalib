@@ -7,7 +7,7 @@ Author: Paul-Edouard Sarlin (skydes)
 import os
 import random
 import time
-from collections.abc import Iterable
+from collections.abc import Iterable, Callable
 from contextlib import contextmanager
 from typing import Optional
 
@@ -16,6 +16,13 @@ import torch
 
 # flake8: noqa
 # mypy: ignore-errors
+
+_np_trapz: Callable[..., np.ndarray | float]
+
+try:
+    _np_trapz = np.trapezoid  # type: ignore[attr-defined]
+except AttributeError:
+    _np_trapz = np.trapz  # type: ignore[attr-defined]
 
 
 class AverageMetric:
@@ -176,7 +183,8 @@ def compute_auc(errors, thresholds, min_error: Optional[float] = None):
         last_index = np.searchsorted(errors, t, side="right")
         r = np.r_[recall[:last_index], recall[last_index - 1]]
         e = np.r_[errors[:last_index], t]
-        auc = np.trapezoid(r, x=e) / t
+        # auc = np.trapezoid(r, x=e) / t
+        auc = _np_trapz(r, x=e) / t
         aucs.append(np.round(auc, 4))
     return aucs
 
