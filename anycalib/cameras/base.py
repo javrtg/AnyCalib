@@ -438,7 +438,7 @@ class BaseCamera(ABC):
         scale: float = 1.0,
         target_proj: str = "perspective",
         outside_value: float = 1.0,
-        interp_mode: str = "bilinear",
+        add_alpha: bool = False,
     ) -> Tensor:
         """Undistort an image using the distortion model.
 
@@ -457,11 +457,12 @@ class BaseCamera(ABC):
                 the method `ideal_unprojection`.
             outside_value: value to use for pixels outside the image bounds after
                 undistortion.
-            interp_mode: interpolation mode for the grid sample operation. Default is
-                "bilinear". Other options are "nearest" and "bicubic".
+            add_alpha: If True, append a binary alpha channel indicating whether each
+                undistorted pixel samples from inside the original image.
 
         Returns:
-            (B, 3, H, W) or (3, H, W) undistorted image.
+            (B, 3, H, W) or (3, H, W) undistorted image, or with an additional alpha
+                channel if `add_alpha=True`.
         """
         assert im.ndim in (3, 4), f"Expected 3 or 4 input dimensions, got {im.ndim=}."
         is_batched = im.ndim == 4
@@ -491,12 +492,19 @@ class BaseCamera(ABC):
         map_xy = 2 * map_xy.reshape(b, h, w, 2) / map_xy.new_tensor((w, h)) - 1
         # undistort
         im_undist = outside_value + torch.nn.functional.grid_sample(
-            im - outside_value,
-            map_xy,
-            mode=interp_mode,
-            padding_mode="zeros",
-            align_corners=False,
+            im - outside_value, map_xy, align_corners=False, padding_mode="zeros"
         )
+
+        if add_alpha:
+            alpha = 0.99 < torch.nn.functional.grid_sample(
+                im.new_ones((b, 1, h, w)),
+                map_xy,
+                mode="bilinear",
+                align_corners=False,
+                padding_mode="zeros",
+            )
+            im_undist = torch.cat((im_undist, alpha.to(im_undist.dtype)), dim=1)
+
         if not is_batched:
             im_undist = im_undist[0]
         return im_undist
