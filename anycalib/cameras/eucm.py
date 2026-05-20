@@ -83,7 +83,7 @@ class EUCM(BaseCamera):
 
     @classmethod
     def create_from_id(cls, id_) -> BaseCamera:
-        assert id_ == "eucm", f"Expected id='eucm', but got: {id_}."
+        assert id_ == cls.NAME, f"Expected id='{cls.NAME}', but got: {id_}."
         return cls()
 
     @property
@@ -96,7 +96,7 @@ class EUCM(BaseCamera):
             total = num_f + 4
             params_str = (
                 "fx, fy" if self.NUM_F == 2 else "f"
-            ) + ", cx, cy, \u03B1, \u03B2"
+            ) + ", cx, cy, \u03b1, \u03b2"
             raise ValueError(
                 f"Expected (..., {total}) parameters as input, representing (...) "
                 f"cameras and {total} intrinsic params per cameras: {params_str}, i.e. "
@@ -128,7 +128,9 @@ class EUCM(BaseCamera):
         xy = points_3d[..., :2]
         z = points_3d[..., 2:]
         d = torch.sqrt(
-            (params[..., None, -1:] * (xy**2).sum(dim=-1, keepdim=True) + z**2).clamp(eps)  # fmt: skip
+            (params[..., None, -1:] * (xy**2).sum(dim=-1, keepdim=True) + z**2).clamp(
+                eps
+            )  # fmt: skip
         )
         alpha = params[..., None, -2:-1]  # (..., 1, 1)
         im_coords = (
