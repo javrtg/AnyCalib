@@ -261,7 +261,7 @@ python -m siclib.eval.stanford2d3d_rays --conf anycalib_pretrained --tag anycali
 ```
 
 ## Extended OpenPano Dataset
-We extend the OpenPano dataset from [GeoCalib](https://github.com/cvg/GeoCalib?tab=readme-ov-file#openpano-dataset) with panoramas that not need to be aligned with the gravity direction. This extended version consists of tonemapped panoramas from [The Laval Photometric Indoor HDR Dataset](http://hdrdb.com/indoor-hdr-photometric/), [PolyHaven](https://polyhaven.com/hdris), [HDRMaps](https://hdrmaps.com/freebies/free-hdris/), [AmbientCG](https://ambientcg.com/list?type=hdri&sort=popular) and [BlenderKit](https://www.blenderkit.com/asset-gallery?query=category_subtree:hdr).
+We extend the OpenPano dataset from [GeoCalib](https://github.com/cvg/GeoCalib?tab=readme-ov-file#openpano-dataset) with panoramas that not need to be aligned with the gravity direction. This extended version consists of tonemapped panoramas from [The Laval Photometric Indoor HDR Dataset](http://hdrdb.com/indoor-hdr-photometric/), [PolyHaven](https://polyhaven.com/hdris), [HDRMaps](https://hdrmaps.com/freebies/free-hdris/), [AmbientCG](https://ambientcg.com/list?type=hdri&sort=popular) and [BlenderKit](https://www.blendkit.com/asset-gallery?query=category_subtree:hdr).
 
 Before sampling images from the panoramas, first download the Laval dataset following the instructions on the [corresponding project page](http://hdrdb.com/indoor-hdr-photometric/#:~:text=HDR%20Dataset.-,Download,-To%20obtain%20the) and place the panoramas in `data/indoorDatasetCalibrated`. Then, tonemap the HDR images using the following command:
 ```shell
@@ -338,7 +338,7 @@ python -m siclib.eval.<benchmark> --checkpoint <experiment_name> --tag <experime
 ## Acknowledgements
 Thanks to the authors of [GeoCalib](https://github.com/cvg/GeoCalib) for open-sourcing the comprehensive and easy-to-use [`siclib`](https://github.com/cvg/GeoCalib/tree/main/siclib) which we use as the base of our evaluation and training code. <br>
 Thanks to the authors of the [The Laval Photometric Indoor HDR Dataset](http://hdrdb.com/indoor-hdr-photometric/) for allowing us to release the weights of AnyCalib under a permissive license. <br>
-Thanks also to the authors of [The Laval Photometric Indoor HDR Dataset](http://hdrdb.com/indoor-hdr-photometric/), [PolyHaven](https://polyhaven.com/hdris), [HDRMaps](https://hdrmaps.com/freebies/free-hdris/), [AmbientCG](https://ambientcg.com/list?type=hdri&sort=popular) and [BlenderKit](https://www.blenderkit.com/asset-gallery?query=category_subtree:hdr) for providing high-quality freely-available panoramas that made the training of AnyCalib possible.
+Thanks also to the authors of [The Laval Photometric Indoor HDR Dataset](http://hdrdb.com/indoor-hdr-photometric/), [PolyHaven](https://polyhaven.com/hdris), [HDRMaps](https://hdrmaps.com/freebies/free-hdris/), [AmbientCG](https://ambientcg.com/list?type=hdri&sort=popular) and [BlenderKit](https://www.blendkit.com/asset-gallery?query=category_subtree:hdr) for providing high-quality freely-available panoramas that made the training of AnyCalib possible.
 
 ## BibTex citation
 If you use any ideas from the paper or code from this repo, please consider citing:
